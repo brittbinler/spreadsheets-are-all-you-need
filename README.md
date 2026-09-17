@@ -1,3 +1,14 @@
+> **This is a fork.** The original project is
+> [ianand/spreadsheets-are-all-you-need](https://github.com/ianand/spreadsheets-are-all-you-need)
+> by [Ishan Anand](https://saayn.com), used here under its embedded
+> [3-Clause BSD License](LICENSE). This fork adds a hosted landing page
+> (`index.html`) so notebooks can be opened directly from a URL instead of
+> downloading the file from GitHub first, plus a small fix so the OpenAI API
+> key field persists correctly across page loads when served over `https://`
+> rather than opened as a local file. The notebook engine itself
+> (`notebook.html`, originally `blank.saayn.html`) is unmodified upstream code.
+> Live: see the GitHub Pages link on this repo's About page.
+
 # Spreadsheets-are-all-you-need Notebooks
 
 Spreadsheets-are-all-you-need Notebooks are what happens when a spreadsheet and a python notebook have an AI powered baby in browser land. 

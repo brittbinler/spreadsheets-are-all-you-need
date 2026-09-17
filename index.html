@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Spreadsheet Notebooks</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #6b6b6b;
+    --border: #e2e2e2;
+    --accent: #1a1a1a;
+    --card-bg: #fafafa;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14161a;
+      --fg: #eaeaea;
+      --muted: #9a9a9a;
+      --border: #2a2d33;
+      --accent: #eaeaea;
+      --card-bg: #1b1e24;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+  }
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 64px 20px 40px;
+  }
+  h1 {
+    font-size: 1.75rem;
+    margin: 0 0 8px;
+  }
+  p.lede {
+    color: var(--muted);
+    margin: 0 0 40px;
+    font-size: 1.05rem;
+  }
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  @media (max-width: 480px) {
+    .actions { grid-template-columns: 1fr; }
+  }
+  .action-card {
+    display: block;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--card-bg);
+    text-decoration: none;
+    color: var(--fg);
+    transition: border-color 0.15s ease;
+  }
+  .action-card:hover {
+    border-color: var(--accent);
+  }
+  .action-card .title {
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .action-card .desc {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  section {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    margin-top: 24px;
+  }
+  section h2 {
+    font-size: 1rem;
+    margin: 0 0 8px;
+  }
+  section p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin: 0 0 12px;
+  }
+  a { color: inherit; }
+  ul.example-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  ul.example-list li {
+    margin-bottom: 6px;
+  }
+  footer {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  footer a { text-decoration: underline; }
+</style>
+</head>
+<body>
+<main>
+  <h1>AI Spreadsheet Notebooks</h1>
+  <p class="lede">Spreadsheets that run AI-powered notebook steps, right in your browser. No install, no account, nothing sent to a server except your own requests to OpenAI.</p>
+
+  <div class="actions">
+    <a class="action-card" href="notebook.html">
+      <div class="title">New notebook</div>
+      <div class="desc">Start from a blank notebook</div>
+    </a>
+    <a class="action-card" href="examples/basic-example.html">
+      <div class="title">Open example</div>
+      <div class="desc">See a working notebook that summarizes orders from a CSV</div>
+    </a>
+  </div>
+
+  <section>
+    <h2>More examples</h2>
+    <p>Each one is a self-contained HTML file. Download, edit, and open locally, or just click to run it here.</p>
+    <ul class="example-list">
+      <li><a href="examples/interactive.html">Interactive example</a> &mdash; extending a notebook with custom HTML</li>
+      <li><a href="examples/fetch-api-example.html">Fetch API example</a> &mdash; a notebook calling a CORS-compatible API</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>How it works</h2>
+    <p>Each notebook is one self-contained .html file. Open it, paste in your own OpenAI API key (stored only in your browser), and run steps that mix spreadsheet cells, JavaScript, and AI prompts. To import your own CSV, open a notebook and use the import option inside it, or drop your data directly into a cell.</p>
+  </section>
+
+  <footer>
+    Fork of <a href="https://saayn.com">Spreadsheets-Are-All-You-Need Notebooks</a> by Ishan Anand, used under its
+    <a href="LICENSE">3-Clause BSD License</a>. Source on
+    <a href="https://github.com/brittbinler/spreadsheets-are-all-you-need">GitHub</a>.
+  </footer>
+</main>
+</body>
+</html>

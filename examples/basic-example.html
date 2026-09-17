@@ -142,17 +142,21 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” 
       window.Saayn.getOpenAIKey = function() {
         // Try to get API key from localStorage
         let apiKey = localStorage.getItem(openaiApiKeyName) || '';
-        
-        // Try to get from input field
-        const apiKeyInputElement = document.getElementById('openai-key-input');
-        if (!apiKey && apiKeyInputElement) {
-          apiKey = apiKeyInputElement.value;
+
+        // Try to get api key from the input field via saayn-header web component.
+        // (Not document.getElementById: the input lives inside the header's shadow
+        // root, which a plain document-level id lookup can't see.)
+        if (!apiKey) {
+          const saaynHeader = document.querySelector('saayn-header');
+          if (saaynHeader && saaynHeader.getApiKey) {
+            apiKey = saaynHeader.getApiKey();
+          }
         }
-        
+
         if(apiKey) {
           apiKey = apiKey.trim();
-        } 
-        return apiKey;        
+        }
+        return apiKey;
       };
       
       // Expose runAllSteps function to global scope
@@ -442,17 +446,19 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” 
       // Load saved key
       keyInput.value = Saayn.getOpenAIKey();
       
-      // Allow saving the key to local storage in Firefox
-      if (Saayn.isFirefox()) {
+      // Show the save button in Firefox, or anywhere served over http(s) (storage
+      // is origin-scoped there in every browser, so saving is safe; file:// is the
+      // only case where it isn't, outside Firefox).
+      if (Saayn.isFirefox() || window.location.protocol !== 'file:') {
         saveBtn.style.display = 'block';
         saveBtn.textContent = 'Save';
         saveBtn.title = 'Save API key to browser storage';
-      } 
-      
+      }
+
       // Save key when button is clicked
       saveBtn.addEventListener('click', () => {
         const key = keyInput.value.trim();
-        if (Saayn.isFirefox()) {
+        if (Saayn.isFirefox() || window.location.protocol !== 'file:') {
           Saayn.setOpenAIKey(key);
           if(key) {
             alert('API key saved to local storage.');

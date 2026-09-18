@@ -750,36 +750,27 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” 
         };
         //console.log('Request:\n', JSON.stringify(request, null, 2));
         const response = await fetch('https://api.openai.com/v1/responses', request);
-  
-        // Log status and any CORS-related headers
-        //console.log(`Status: ${response.status} ${response.statusText}`);
-        //console.log('Access-Control-Allow-Origin:', response.headers.get('Access-Control-Allow-Origin'));
-  
-        // Log raw text in case it's not valid JSON
-        const text = await response.text();
-        //console.log('Raw response body:', text);
-  
-        // Attempt to parse JSON if possible
-        try {
-          //console.log('Parsed JSON:', JSON.parse(text));
+        const responseJson = await response.json();
+
+        // Check for API or HTTP errors before assuming the call produced code.
+        // (Previously this parsed the raw response text for a ```-fenced block
+        // regardless of status, so an API error or quota/model-access failure
+        // -- which returns JSON with no code fences -- silently produced no
+        // match and cleared the code editor with no visible error at all.)
+        if (responseJson.error) {
+          result = `API Error: ${responseJson.error.message || 'Unknown error'}`;
+        } else if (!response.ok) {
+          result = `HTTP Error: ${response.status} ${response.statusText}`;
+        } else {
+          const text = responseJson?.output?.[0]?.content?.[0]?.text || '';
           const codeBlockRegex = /```(?:js|javascript)?\s*([\s\S]*?)\s*```/gi;
           const allMatches = [...text.matchAll(codeBlockRegex)];
           const lastSnippet = allMatches.length
-            ? allMatches[allMatches.length - 1][1]
-                .replace(/\\n/g, '\n')
-                .replace(/\\"/g, '"')
-                .replace(/\\'/g, "'")
-                .replace(/\\\\/g, '\\')
-                .trim()
+            ? allMatches[allMatches.length - 1][1].trim()
             : null;
-  
-          result = lastSnippet;
-        } catch (err) {
-          console.warn('Response not valid JSON', err);
-          result = 'Response not valid JSON' + err;
+
+          result = lastSnippet || `No code block found in response:\n${text}`;
         }
-  
-  
       } catch (err) {
         console.error('Fetch error:', err);
         result = 'Fetch error: ' + err;
